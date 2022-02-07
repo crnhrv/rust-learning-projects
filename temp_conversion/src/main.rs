@@ -20,6 +20,7 @@ fn main() {
             }
             Err(_) => {
                 println!("Please enter a valid number");
+                choice = String::new();
                 continue;
             }
         };
@@ -37,6 +38,7 @@ fn main() {
             Ok(value) => break value,
             Err(_) => {
                 println!("Please enter a valid number");
+                temperature = String::new();
                 continue;
             }
         };
