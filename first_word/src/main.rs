@@ -2,7 +2,7 @@ use std::io;
 
 fn main() {
     println!("Enter a sentence to return the first word");
-    
+
     let mut input = String::new();
 
     io::stdin()
@@ -12,12 +12,14 @@ fn main() {
     println!("First word: {}", get_first_word(&input));
 }
 
-fn get_first_word(input: &String) -> String {
-    let splits = input.split(" ");
+fn get_first_word(input: &str) -> &str {
+    let bytes = input.as_bytes();
 
-    for elem in splits {
-        return String::from(elem);
+    for (i, &byte) in bytes.iter().enumerate() {
+        if byte == b' ' {
+            return &input[0..i];
+        }
     }
 
-    return String::from(input);
+    return &input[..];
 }
