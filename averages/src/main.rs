@@ -14,7 +14,6 @@ fn main() {
     println!("vec1: {:?}", vec1);
     println!("vec2: {:?}", vec2);
 
-
     println!("vec1 median: {}, vec1 mode: {}, vec2 median: {}, vec2 mode: {}", vec1_med, vec1_mode, vec2_med, vec2_mode);
 }
 
