@@ -3,13 +3,20 @@ use std::io;
 fn main() {
     println!("Enter a sentence to pig-latinify!");
 
-    let mut input = String::new();
+    loop {
+        let mut input = String::new();
 
-    io::stdin()
-        .read_line(&mut input)
-        .expect("Not a valid string");
+        io::stdin()
+            .read_line(&mut input)
+            .expect("Not a valid string");
+    
+        if !input.is_ascii() {
+            println!("Please use only the latin alphabet!");
+            continue;    
+        }
 
-    println!("{}", pig_latinify(&input.trim()));
+        println!("{}", pig_latinify(&input.trim()));
+    }
 }
 
 fn pig_latinify(string: &str) -> String {
@@ -42,7 +49,7 @@ fn pig_latinify(string: &str) -> String {
         if char_to_replace != '\0' {
             new_word += &char_to_replace.to_string();
         }
-        
+
         latinified_word.push(new_word);
     }
 
