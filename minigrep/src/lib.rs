@@ -9,13 +9,11 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn new(args: &[String]) -> Result<Config, &str> {
-        if args.len() < 3 {
-            return Err("not enough arguments")
-        }
+    pub fn new(mut args: env::Args) -> Result<Config, &'static str> {
+        args.next();
 
-        let query = args[1].clone();
-        let filename = args[2].clone();    
+        let query = args.next().ok_or("Didn't get a query string")?;
+        let filename = args.next().ok_or("Didn't get a filename")?;
         let case_sensitive = env::var("CASE_INSENSITIVE").is_err();
 
         Ok(Config { query, filename, case_sensitive })
@@ -33,16 +31,9 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 }
 
 pub fn search<'a>(query: &str, contents: &'a str, case_sensitive: bool) -> Vec<&'a str> {
-    let mut matches = Vec::new();   
-    for elem in contents.lines() {
-        if case_sensitive == false && elem.to_lowercase().contains(&query.to_lowercase()) {
-            matches.push(elem);
-        } else if elem.contains(&query) {
-            matches.push(elem);
-        }                
-    };
-
-    return matches;
+    contents.lines()
+        .filter(|line| if case_sensitive { line.contains(query) } else { line.to_lowercase().contains(&query.to_ascii_lowercase()) } )
+        .collect()
 }
 
 #[cfg(test)]
