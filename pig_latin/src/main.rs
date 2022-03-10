@@ -1,22 +1,27 @@
 use std::io;
+use std::io::prelude::*;
 
 fn main() {
-    println!("Enter a sentence to pig-latinify!");
+    println!("Enter a sentence to pig-latinify! (X to quit)");
 
-    loop {
-        let mut input = String::new();
+    let stdin = io::stdin();
+    let reader = stdin.lock();
+    for line_ in reader.lines() {
+        let line = line_.unwrap();
 
-        io::stdin()
-            .read_line(&mut input)
-            .expect("Not a valid string");
-    
-        if !input.is_ascii() {
+        if !line.is_ascii() {
             println!("Please use only the latin alphabet!");
             continue;    
         }
 
-        println!("{}", pig_latinify(&input.trim()));
-    }
+        if line == "X" {
+            std::process::exit(0);
+        }
+
+        println!("=-----------------------------=");
+        println!("Pigified: {}", pig_latinify(&line.trim()));
+        println!("=-----------------------------=");
+    }    
 }
 
 fn pig_latinify(string: &str) -> String {
